@@ -1,0 +1,217 @@
+/* Afterbuild — base look and feel.
+   Calm "diagnostic readout" aesthetic: neutral background, one accent, generous
+   whitespace, system fonts only (no web-font network dependency). See
+   devpost/spec.md > Look and Feel. Slice 1 provides tokens + static shell only. */
+
+:root {
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial,
+    sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+  --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Consolas, 'Liberation Mono', Menlo,
+    monospace;
+
+  --accent: #2f6feb;
+
+  --bg: #f7f7f8;
+  --surface: #ffffff;
+  --border: #dcdde0;
+  --text: #1b1d1f;
+  --text-muted: #5b5f66;
+
+  --added-bg: #e6f4ea;
+  --added-text: #1a6b34;
+  --removed-bg: #fbe9e9;
+  --removed-text: #a3231f;
+
+  --radius: 8px;
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2.5rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --accent: #6ea8fe;
+    --bg: #16171a;
+    --surface: #1e2023;
+    --border: #34363b;
+    --text: #e8e9ea;
+    --text-muted: #a1a5ab;
+
+    --added-bg: #123420;
+    --added-text: #7ee2a0;
+    --removed-bg: #3a1717;
+    --removed-text: #f2938f;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 var(--space-2) var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.app-header {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: var(--space-4) var(--space-2) var(--space-2);
+}
+
+.app-header h1 {
+  margin: 0 0 var(--space-1);
+  font-size: 1.75rem;
+  letter-spacing: -0.01em;
+}
+
+.tagline {
+  margin: 0;
+  color: var(--text-muted);
+  max-width: 60ch;
+}
+
+.input-zone,
+.report-zone,
+.diff-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-3);
+}
+
+.input-zone label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: var(--space-1);
+}
+
+.diff-textarea {
+  width: 100%;
+  min-height: 16rem;
+  resize: vertical;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-2);
+}
+
+.diff-textarea::placeholder {
+  color: var(--text-muted);
+}
+
+.input-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  margin-top: var(--space-2);
+}
+
+button {
+  font-family: inherit;
+  font-size: 0.9375rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color 150ms ease, background-color 150ms ease;
+}
+
+button:hover:not(:disabled) {
+  border-color: var(--accent);
+}
+
+button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+button:disabled {
+  color: var(--text-muted);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+#analyze-btn {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #ffffff;
+}
+
+#analyze-btn:disabled {
+  background: var(--surface);
+  border-color: var(--border);
+  color: var(--text-muted);
+}
+
+.diff-panel summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.diff-view {
+  margin-top: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+}
+
+.diff-line.add {
+  background: var(--added-bg);
+  color: var(--added-text);
+}
+
+.diff-line.del {
+  background: var(--removed-bg);
+  color: var(--removed-text);
+}
+
+.concept-highlight {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (max-width: 480px) {
+  .app-header,
+  main {
+    padding-left: var(--space-1);
+    padding-right: var(--space-1);
+  }
+
+  .input-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .input-actions button {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

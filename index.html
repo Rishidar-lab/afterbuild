@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Afterbuild</title>
+    <meta
+      name="description"
+      content="Paste a git diff, get a grounded aftermath brief — a change map, a traceable concept inventory, and a quiz, all generated offline from the real diff."
+    />
+    <link rel="stylesheet" href="/src/styles.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <h1>Afterbuild</h1>
+      <p class="tagline">
+        Paste a git diff and get a grounded aftermath brief — a change map, a traceable
+        concept inventory, and a 5-question quiz, generated offline from the real diff.
+      </p>
+    </header>
+
+    <main>
+      <section class="input-zone" aria-label="Diff input">
+        <label for="diff-input">Paste a unified git diff</label>
+        <textarea
+          id="diff-input"
+          class="diff-textarea"
+          placeholder="Paste the output of `git diff` here..."
+          spellcheck="false"
+          rows="16"
+        ></textarea>
+
+        <div class="input-actions">
+          <button id="analyze-btn" type="button" disabled>Analyze</button>
+          <button id="load-sample-btn" type="button">Load sample diff</button>
+          <button id="load-file-btn" type="button">Load .diff file</button>
+          <button id="clear-btn" type="button">Clear</button>
+          <input id="file-input" type="file" accept=".diff,.patch,.txt" hidden />
+        </div>
+      </section>
+
+      <section id="report" class="report-zone" hidden>
+        <!-- Populated by later slices: change map, concept inventory, learning path, quiz. -->
+      </section>
+
+      <details class="diff-panel">
+        <summary>Rendered diff</summary>
+        <div id="diff-view" class="diff-view">
+          <!-- Populated by later slices with data-file / data-line anchors. -->
+        </div>
+      </details>
+    </main>
+
+    <script type="module" src="/src/ui/app.ts"></script>
+  </body>
+</html>
