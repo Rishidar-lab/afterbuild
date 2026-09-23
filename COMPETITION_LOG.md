@@ -17,7 +17,7 @@ UTC unless noted. Kept so there is evidence the project was created new during t
 | 2026-09-24 | Planning gate committed | See git log. Docs are `status: draft` pending learner review before `5-build`. |
 
 ## Checkpoints still ahead (not yet done)
-- [ ] Learner reviews/approves scope, PRD, spec (flip `status: draft` → `approved`).
+- [x] Learner reviews/approves scope, PRD, spec — approved 2026-09-24 (`status: approved`).
 - [ ] `5-build` slices 1–8 implemented (Sonnet 5, high) — with test runs recorded here.
 - [ ] Core journey verified on a clean run; unit tests green.
 - [ ] Public GitHub repository created (owner-authorized; secret + personal-context scan first).

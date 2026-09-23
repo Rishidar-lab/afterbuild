@@ -1,6 +1,6 @@
 ---
 doc: scope
-status: draft
+status: approved
 ---
 <!-- status: draft until the learner reviews and approves ("looks good" counts), then flips
      to approved so 3-prd/5-build can proceed. -->

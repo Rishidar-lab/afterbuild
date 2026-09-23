@@ -1,6 +1,6 @@
 ---
 doc: spec
-status: draft
+status: approved
 ---
 <!-- status: draft until the learner reviews and approves. -->
 
