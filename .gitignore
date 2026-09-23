@@ -1,0 +1,18 @@
+# Personal learning context — kept out of commits by default (NOT out of your AI provider's conversation)
+/devpost/learner-profile.md
+
+# Local credentials — never commit
+.env
+.env.*
+!.env.example
+
+# Node
+node_modules/
+dist/
+
+# Devpost Learn Skill Pack machinery — reinstall with:
+#   npx skills add challengepost/learn-ai-basics --all -y
+# (skills-lock.json IS tracked, so the exact version is recorded)
+.agents/
+agent/
+.claude/
