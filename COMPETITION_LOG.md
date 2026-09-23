@@ -14,11 +14,13 @@ UTC unless noted. Kept so there is evidence the project was created new during t
 | 2026-09-24 | `3-prd` | `devpost/prd.md` drafted. |
 | 2026-09-24 | `4-spec` | `devpost/spec.md` drafted. |
 | 2026-09-24 | Demo + build planning | `devpost/demo-storyboard.md`, `devpost/IMPLEMENTATION_PLAN.md` drafted. |
-| 2026-09-24 | Planning gate committed | See git log. Docs are `status: draft` pending learner review before `5-build`. |
+| 2026-09-24 | Planning gate committed | Commits 7e0c8d3, 9aaf899. Docs drafted pending learner review before `5-build`. |
+| 2026-09-24 | Planning docs approved | Learner approved scope/PRD/spec → `status: approved`. Commit 9dd58c2. |
+| 2026-09-24 | 5-build · Slice 1 (app boots) | Vite+TS+Vitest scaffold + static shell (header, diff textarea, disabled Analyze, base look-and-feel). Implemented by **Sonnet 5** (high effort). Build verified independently (`tsc --noEmit && vite build`, 67ms). Commit 1f6e8d4. Toolchain: vite@8.3.0, typescript@7.0.2, vitest@5.0.1. |
 
 ## Checkpoints still ahead (not yet done)
 - [x] Learner reviews/approves scope, PRD, spec — approved 2026-09-24 (`status: approved`).
-- [ ] `5-build` slices 1–8 implemented (Sonnet 5, high) — with test runs recorded here.
+- [ ] `5-build` slices 1–8 implemented (Sonnet 5, high) — **Slice 1/8 done (1f6e8d4)**; test runs recorded here from Slice 3 on.
 - [ ] Core journey verified on a clean run; unit tests green.
 - [ ] Public GitHub repository created (owner-authorized; secret + personal-context scan first).
 - [ ] 1–3 min demo video recorded (owner) and hosted (YouTube/Vimeo, public).
