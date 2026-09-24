@@ -127,6 +127,12 @@ main {
   margin-top: var(--space-2);
 }
 
+.input-hint {
+  margin: var(--space-2) 0 0;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+
 button {
   font-family: inherit;
   font-size: 0.9375rem;
