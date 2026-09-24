@@ -23,8 +23,9 @@ Target length: **105–130 seconds** (hard cap 3:00). English. Show the product 
    press **Show answer** on one question; note it cites a `file:line`.
 6. **(100–115s)** Optionally paste a *different* small diff and Analyze once, to show it
    generalizes.
-7. **(115–125s)** Close in your own words — suggested: "AI helps you ship code faster.
-   Afterbuild helps you understand what you shipped."
+7. **(115–125s)** Close in your own words — suggested (echoes your tagline): "Afterbuild turns
+   the code you just shipped with an AI agent into a traceable learning path — so you keep the
+   speed of coding agents without losing sight of what you actually built."
 8. Stop recording.
 
 ## After

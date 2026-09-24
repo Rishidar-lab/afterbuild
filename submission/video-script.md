@@ -26,5 +26,7 @@ in your diff, Afterbuild doesn't claim it."
 question cites the line it came from. So I can check that I actually get it."
 
 **100–115s — privacy + close**
-"All of this runs in the browser — no API key, no account, nothing leaves the page. AI helps
-you ship code faster. Afterbuild helps you understand what you shipped."
+"All of this runs in the browser — no API key, no account, nothing leaves the page." Then
+close in your own words; suggested (echoes your tagline): "Afterbuild turns the code you just
+shipped with an AI agent into a traceable learning path — so you keep the speed of coding
+agents without losing sight of what you actually built."
