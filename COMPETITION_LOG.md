@@ -6,7 +6,7 @@ UTC unless noted. Kept so there is evidence the project was created new during t
 | When (UTC) | Event | Detail |
 |---|---|---|
 | 2026-09-24 | Devpost registration | Learner joined Build With AI: Basics on Devpost (owner action). |
-| 2026-09-24 | Project folder created | `/home/parzival/competitions/build-with-ai-basics`, empty (`ls -la` = only `.`/`..`). |
+| 2026-09-24 | Project folder created | New empty project folder `competitions/build-with-ai-basics` (`ls -la` = only `.`/`..`). |
 | 2026-09-24 | Skill Pack installed | `npx skills add challengepost/learn-ai-basics --all -y` → 6 skills, exit 0. Ref recorded in `skills-lock.json` (source `challengepost/learn-ai-basics`, GitHub). |
 | 2026-09-24 | Git initialized | Independent history; no source copied from any prior project. |
 | 2026-09-24 | `1-start` | Learner profile written (`devpost/learner-profile.md`, gitignored). Fresh-folder check passed. |
@@ -21,15 +21,24 @@ UTC unless noted. Kept so there is evidence the project was created new during t
 | 2026-09-24 | 5-build · Slice 3 (diff parser) | Unified-diff parser + `types.ts`/`detectLanguage.ts`; tests-first for exact new-file line numbers across multiple hunks. 14 parser tests. Sonnet 5. Commit f148499. |
 | 2026-09-24 | 5-build · Slice 4 (concept detection) | Rule-based grounded detector — every concept cites a real added line; no-hallucination enforced structurally. +25 tests. Sonnet 5 (engine survived a session interruption; kept + tested + committed). Commit becd77d. |
 | 2026-09-24 | 5-build · Slice 5 (brief + quiz, end-to-end) | `buildBrief` (change map + concept inventory + learning path + exactly-5 quiz w/ grounded fallback, never fabricated) + `render.ts` + Analyze wired. jsdom integration test proves paste→brief renders. **64 tests total, build green — independently verified.** Sonnet 5. Commit 34429bd. |
+| 2026-09-24 | 5-build · Slice 6 (traceability + polish) | Click a citation badge → opens diff panel, scrolls to & highlights the exact `data-file`/`data-line`; keyboard-accessible badges; look-and-feel polish; `prefers-reduced-motion` honored. +4 tests. Sonnet 5. Commit 1bba82f. |
+| 2026-09-24 | 5-build · Slice 7 (edge states) | Binary-file + large-file (`MAX_DETECT_LINES=400`) detection-skip with honest notes; thin-diff + unparseable paths; `detectionSkipped` threaded parser→detector→render. +15 tests. Sonnet 5. Commit 4bdd5f3. |
+| 2026-09-24 | 5-build · Slice 8 (demo polish + prep) | Final visual pass; accurate README run steps + honest status; `devpost/demo-checklist.md`; repo-hygiene scan (no secrets, learner-profile untracked); `npm test`/`build`/`preview` all green. **86 tests total, independently re-verified.** Sonnet 5. Commit 4d94e55. |
 
-## Checkpoints still ahead (not yet done)
+## Status
 - [x] Learner reviews/approves scope, PRD, spec — approved 2026-09-24 (`status: approved`).
-- [ ] `5-build` slices 1–8 implemented (Sonnet 5, high) — **Slices 1–5/8 done** (…→34429bd); 64 tests green, build clean. Slices 6–8 (traceability highlight · edge states · demo polish) next.
-- [ ] Core journey verified on a clean run; unit tests green.
-- [ ] Public GitHub repository created (owner-authorized; secret + personal-context scan first).
-- [ ] 1–3 min demo video recorded (owner) and hosted (YouTube/Vimeo, public).
-- [ ] Devpost description + form fields written by the owner; exit survey completed.
+- [x] `5-build` slices 1–8 implemented (Sonnet 5, high) — **all 8 done** (1f6e8d4→4d94e55); 86 tests green, build clean.
+- [x] Core journey verified on a clean run — 86 unit + jsdom tests green, `npm run build` clean, `npm run preview` served OK (independently re-run 2026-09-24).
+- [x] Repo-hygiene scan — no secrets/keys tracked; `devpost/learner-profile.md` not tracked; no absolute home paths in tracked files.
+
+## Remaining — OWNER-gated submission steps (not yet done)
+- [ ] Public GitHub repository created + pushed (owner must authorize publishing; code + history become public).
+- [ ] 1–3 min demo video recorded (owner) and hosted publicly (YouTube/Vimeo).
+- [ ] Devpost project name + description + form fields written **by the owner** (Skill Pack `6-ship` requires the learner to author submission copy); exit survey completed.
 - [ ] Submission on Devpost (owner) before 2026-10-26 17:00 EDT.
+
+## Note for the official `6-ship` skill
+This build followed a custom slice plan (`devpost/IMPLEMENTATION_PLAN.md`), not the interactive `5-build` skill, so there is no `devpost/checklist.md` or `devpost/app-map.html` (the skill's learning wrap-up). These are learning artifacts, **not** Devpost submission-form requirements. If the owner wants to run the official `6-ship` skill end-to-end, a short honest `checklist.md` + code-tour/app-map can be generated on request.
 
 ## Provenance notes
 - Skill Pack version/ref: recorded in `skills-lock.json` (per-skill `computedHash` +
