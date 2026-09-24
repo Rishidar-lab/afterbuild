@@ -1,39 +1,52 @@
-# RECORD-NOW — Afterbuild demo video (do this in one take)
+# RECORD-NOW — AFTERBUILD demo video
 
-Target length: **105–130 seconds** (hard cap 3:00). English. Show the product actually working.
+One clean continuous take of the **live site**, about **2:00** (target 110–130 s, must be under 3:00).
+What to say and when: [`video-script.md`](video-script.md) — all lines are your own interview words.
 
-## Before you hit record
-1. Terminal: `npm install` then `npm run dev`. Open the printed **http://localhost:5173**.
-   (Or use the live demo once it's up — see README "Live demo".)
-2. Browser: one clean window, ~125% zoom, no personal tabs/bookmarks visible.
-3. Optional but strong: turn off Wi-Fi first, to *show* it works offline.
-4. Have the page loaded with the input **empty** (press **Clear** if needed).
+> `FABLE-*.md` + `assemble-video.sh` in this folder describe a separate clip-by-clip assembly
+> workflow. This file is the one-take plan. Use one or the other, not a mix.
 
-## The take (follow in order)
-1. **(0–10s)** On the empty page, say the problem in your own words — e.g. "An AI agent
-   just wrote me a diff. It runs. Do I actually understand what it did?"
-2. **(10–25s)** Click **Load sample diff**. Scroll the textarea briefly so viewers see it's
-   real multi-file code.
-3. **(25–40s)** Click **Analyze**. The Aftermath Brief appears. Point at **What Changed**
-   (files, +/- lines) and **Concept Inventory**.
-4. **(40–75s) — THE WOW MOMENT.** Click a **citation badge** (e.g. next to `auth-token` or
-   `api-route`). The diff panel opens and the **exact line highlights**. Do it for a second
-   concept. Say: "Every claim points at a real line — nothing is made up."
-5. **(75–100s)** Scroll to **What to Understand** (the learning path), then the **Quiz** —
-   press **Show answer** on one question; note it cites a `file:line`.
-6. **(100–115s)** Optionally paste a *different* small diff and Analyze once, to show it
-   generalizes.
-7. **(115–125s)** Close in your own words — suggested (echoes your tagline): "Afterbuild turns
-   the code you just shipped with an AI agent into a traceable learning path — so you keep the
-   speed of coding agents without losing sight of what you actually built."
-8. Stop recording.
+## Pre-recording checklist
 
-## After
-- Upload to **YouTube or Vimeo**, set visibility **Public** (or Unlisted that anyone with
-  the link can view — confirm it plays in a private browser window with no login).
-- Keep it under 3:00.
-- Put the URL in `submission/devpost-submission.md` and in the Devpost form.
+- [ ] Use the **live GitHub Pages build**: https://rishidar-lab.github.io/afterbuild/ (not localhost).
+- [ ] **Verify the sample immediately before recording:** Load sample diff → Analyze → you see
+      What Changed · Concept Inventory · What to Understand · Quiz, 7 concepts, 5 questions;
+      the **Async/await** badge reads `src/api/authRoutes.ts:17` and clicking it outlines the
+      `router.post('/login', async …)` line. Then press **Clear** and reload.
+- [ ] Browser **notifications off** (OS "Do not disturb" on).
+- [ ] **Other tabs and private content closed** — one window, one tab.
+- [ ] **No terminal visible.**
+- [ ] **No email visible** (no mail client, no inbox tab, no account avatar menus open).
+- [ ] **Browser zoom chosen for readability** — try 125%; the citation text and the outlined diff
+      line must be readable in the recording, not just on your screen.
+- [ ] **Cursor visible** in the recorder settings (and move it deliberately, not in circles).
+- [ ] **Microphone checked** — record 5 seconds, play it back, check level and background noise.
+- [ ] **No copyrighted music.** Voice only (or silence).
+- [ ] **One clean continuous take preferred.** If a take goes wrong, restart the whole take.
+- [ ] **Citation readable for several seconds:** the line outline lasts ~2 s, so after clicking a
+      badge, hold still and click the same badge again while you speak.
+- [ ] **Total under 3 minutes** — check the file length before uploading.
+
+## The take
+
+| Time | Screen | Say (from `video-script.md`) |
+|---|---|---|
+| 0:00–0:12 | Empty page, hint visible | Shot 1 — the problem |
+| 0:12–0:27 | **Load sample diff**, scroll the diff | Shot 2 — what it does, runs locally |
+| 0:27–0:45 | **Analyze**, What Changed → Concept Inventory | Shot 3 — change map, concepts |
+| 0:45–1:18 | Click **Async/await** badge → hold → re-click; click **Auth token/credential** badge → hold | Shot 4 — **the wow moment** |
+| 1:18–1:40 | **What to Understand** | Shot 5 — learning path |
+| 1:40–1:54 | **Quiz** → **Show answer** | Shot 6 — grounded quiz |
+| 1:54–2:05 | Hold, then stop | Shot 7 — closing line |
+
+## After recording
+
+1. Watch it once end to end: is every citation readable, is anything private on screen?
+2. Upload to **YouTube or Vimeo** as **Public** (or Unlisted), then open the link in a private
+   window with no login to confirm it plays.
+3. Give me the URL — I'll put it into `devpost-final.md` (Links → Video) and check it plays.
 
 ## Never
-- Don't show real private repos, secrets, tokens, or personal info — the bundled sample only.
-- Don't fake footage. The demo must be the real app.
+
+- Don't show real private repositories, tokens, or personal information — the bundled sample only.
+- Don't fake or stage footage. The demo must be the real app working.
