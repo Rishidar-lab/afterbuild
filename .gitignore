@@ -10,8 +10,17 @@
 node_modules/
 dist/
 
-# Demo video raw screen recordings + narration (large; assembled by submission/assemble-video.sh)
+# Demo video: raw screen recordings + narration, build intermediates, rendered outputs
+# (large binaries; assembled by submission/assemble-video.sh — never commit video/audio)
 /submission/raw/
+/submission/build/
+/submission/rendered/
+/submission/afterbuild-demo.mp4
+/submission/final/*.mp4
+/submission/final/*.mov
+/submission/final/*.mkv
+/submission/final/*.wav
+/submission/final/*.m4a
 
 # Devpost Learn Skill Pack machinery — reinstall with:
 #   npx skills add challengepost/learn-ai-basics --all -y
