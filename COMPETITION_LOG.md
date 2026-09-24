@@ -25,12 +25,16 @@ UTC unless noted. Kept so there is evidence the project was created new during t
 | 2026-09-24 | 5-build · Slice 7 (edge states) | Binary-file + large-file (`MAX_DETECT_LINES=400`) detection-skip with honest notes; thin-diff + unparseable paths; `detectionSkipped` threaded parser→detector→render. +15 tests. Sonnet 5. Commit 4bdd5f3. |
 | 2026-09-24 | 5-build · Slice 8 (demo polish + prep) | Final visual pass; accurate README run steps + honest status; `devpost/demo-checklist.md`; repo-hygiene scan (no secrets, learner-profile untracked); `npm test`/`build`/`preview` all green. **86 tests total, independently re-verified.** Sonnet 5. Commit 4d94e55. |
 | 2026-09-24 | Public repo published | **https://github.com/Rishidar-lab/afterbuild** — PUBLIC, `main` pushed. Owner-authorized. Commit author/committer email masked to GitHub noreply first. Verified: reachable unauthenticated (HTTP 200), local == origin, and no secrets / `.env` / `dist` / `node_modules` / `learner-profile.md` on the remote. |
+| 2026-09-24 | Final judge audit | Clean-clone reproducibility (`npm ci` 0 vulns → **86 tests** → build, all green); adversarial traceability trace across new-file/deleted/multi-hunk-jump/zero-count → **0 false citations**; **0** runtime network calls in `src`; determinism **5/5** identical briefs. First-use hint + `submission/` recording package added. |
+| 2026-09-24 | Live demo deployed | GitHub Pages via Actions (Vite `base: './'`): **https://rishidar-lab.github.io/afterbuild/** — HTTP 200 unauthenticated, assets load. Optional extra (repo + video already satisfy the rules). |
 
 ## Status
 - [x] Learner reviews/approves scope, PRD, spec — approved 2026-09-24 (`status: approved`).
 - [x] `5-build` slices 1–8 implemented (Sonnet 5, high) — **all 8 done** (1f6e8d4→4d94e55); 86 tests green, build clean.
 - [x] Core journey verified on a clean run — 86 unit + jsdom tests green, `npm run build` clean, `npm run preview` served OK (independently re-run 2026-09-24).
 - [x] Repo-hygiene scan — no secrets/keys tracked; `devpost/learner-profile.md` not tracked; no absolute home paths in tracked files.
+- [x] Final judge audit — clean-clone reproducible (86 tests + build green), traceability 0 false citations, 0 runtime network calls, determinism 5/5.
+- [x] Optional live demo deployed — https://rishidar-lab.github.io/afterbuild/ (GitHub Pages, Actions).
 
 ## Remaining — OWNER-gated submission steps (not yet done)
 - [x] Public GitHub repository created + pushed — https://github.com/Rishidar-lab/afterbuild (PUBLIC, `main`; author email masked to GitHub noreply). 2026-09-24.

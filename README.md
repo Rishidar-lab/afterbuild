@@ -10,6 +10,8 @@ It targets the "vibe-coding comprehension gap": after an AI agent builds or modi
 codebase, you have code that runs but a shallow understanding of what changed and why.
 Afterbuild turns a diff into a grounded, checkable learning artifact.
 
+**Live demo:** https://rishidar-lab.github.io/afterbuild/ — click **Load sample diff → Analyze**, then click a citation badge to jump to the exact line. Runs entirely in your browser.
+
 ## Status
 
 > **MVP implemented; passes 86 tests as of 2026-09-24; not yet deployed, no demo video

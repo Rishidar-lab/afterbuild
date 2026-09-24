@@ -60,7 +60,7 @@ multiple diff hunks, so every citation points at the right line.)
 ## Links
 - **[FACTUAL] Repository:** https://github.com/Rishidar-lab/afterbuild
 - **[YOU PROVIDE] Demo video (YouTube/Vimeo, public):** _(paste URL after recording)_
-- **[FACTUAL, if Pages deploys] Live demo:** _(see README "Live demo"; verify the URL loads)_
+- **[FACTUAL] Live demo:** https://rishidar-lab.github.io/afterbuild/ (verified live; optional but a plus)
 
 ## Exit survey
 **[YOU WRITE]** Your own reflections — answer honestly; I don't fill these.
