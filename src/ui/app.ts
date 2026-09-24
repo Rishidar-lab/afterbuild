@@ -1,11 +1,13 @@
-// Slice 2 — input accepted.
-//
-// Wires the input-zone controls: enable/disable Analyze based on textarea
-// content, Load sample diff, Load .diff file (via FileReader), and Clear.
-// No parsing/analysis/rendering yet — that arrives in Slice 3 onward per
-// devpost/IMPLEMENTATION_PLAN.md.
+// Slice 2 — input accepted (enable/disable Analyze, Load sample diff, Load
+// .diff file, Clear). Slice 5 wires Analyze itself: parseDiff ->
+// detectConcepts -> buildBrief -> render, plus the plain inline message for
+// unparseable input (full state polish — thin/large/binary — is Slice 7).
 
+import { buildBrief } from '../lib/analyze/buildBrief.js';
+import { detectConcepts } from '../lib/analyze/detectConcepts.js';
+import { parseDiff } from '../lib/diff/parseDiff.js';
 import { sampleDiff } from '../samples/sample.diff.js';
+import { renderBrief, renderDiffView } from './render.js';
 
 /**
  * Query a required DOM element by selector, or throw. Returning the
@@ -28,8 +30,8 @@ const loadSampleBtn = mustFind<HTMLButtonElement>('#load-sample-btn');
 const loadFileBtn = mustFind<HTMLButtonElement>('#load-file-btn');
 const clearBtn = mustFind<HTMLButtonElement>('#clear-btn');
 const fileInput = mustFind<HTMLInputElement>('#file-input');
-// #report and #diff-view are queried once the pipeline exists to fill them
-// (Slice 5 wires parseDiff → detectConcepts → buildBrief → render).
+const reportEl = mustFind<HTMLElement>('#report');
+const diffViewEl = mustFind<HTMLElement>('#diff-view');
 
 /** Analyze is enabled only while the textarea holds non-empty (trimmed) text. */
 function updateAnalyzeEnabled(): void {
@@ -65,6 +67,35 @@ fileInput.addEventListener('change', () => {
 clearBtn.addEventListener('click', () => {
   diffInput.value = '';
   updateAnalyzeEnabled();
+  reportEl.hidden = true;
+  reportEl.replaceChildren();
+  diffViewEl.replaceChildren();
+});
+
+/** Shows a plain inline message in the report zone (no crash, input kept as-is). */
+function showInlineMessage(text: string): void {
+  const message = document.createElement('p');
+  message.className = 'error-note';
+  message.textContent = text;
+  reportEl.replaceChildren(message);
+  reportEl.hidden = false;
+  diffViewEl.replaceChildren();
+}
+
+analyzeBtn.addEventListener('click', () => {
+  const parsed = parseDiff(diffInput.value);
+  if (parsed.files.length === 0) {
+    showInlineMessage(
+      "This doesn't look like a unified `git diff`. Try `git diff` output or Load sample diff.",
+    );
+    return;
+  }
+
+  const concepts = detectConcepts(parsed);
+  const brief = buildBrief(parsed, concepts);
+  renderBrief(reportEl, brief);
+  renderDiffView(diffViewEl, parsed);
+  reportEl.hidden = false;
 });
 
 updateAnalyzeEnabled();

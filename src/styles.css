@@ -175,6 +175,24 @@ button:disabled {
   font-size: 0.8125rem;
 }
 
+.diff-file + .diff-file {
+  margin-top: var(--space-2);
+}
+
+.diff-file-path {
+  font-weight: 600;
+  padding-bottom: var(--space-1);
+}
+
+.diff-hunk-header {
+  color: var(--text-muted);
+}
+
+.diff-line {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
 .diff-line.add {
   background: var(--added-bg);
   color: var(--added-text);
@@ -188,6 +206,123 @@ button:disabled {
 .concept-highlight {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
+}
+
+/* Report zone — the four Aftermath Brief sections. */
+.report-zone {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.brief-section h2 {
+  margin: 0 0 var(--space-2);
+  font-size: 1.125rem;
+}
+
+.brief-section + .brief-section {
+  border-top: 1px solid var(--border);
+  padding-top: var(--space-3);
+}
+
+.empty-note,
+.error-note {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.error-note {
+  color: var(--removed-text);
+  font-style: normal;
+}
+
+.change-map-summary {
+  font-weight: 600;
+}
+
+.change-map-list,
+.concept-list,
+.learning-path-list,
+.quiz-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.learning-path-list,
+.quiz-list {
+  list-style: decimal;
+  padding-left: 1.25rem;
+}
+
+.change-map-entry,
+.concept-entry,
+.learning-path-entry,
+.quiz-entry {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-2);
+}
+
+.file-path {
+  font-family: var(--font-mono);
+  font-weight: 600;
+}
+
+.change-stats,
+.change-functions {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+
+.change-functions {
+  margin-top: 0.25rem;
+  font-family: var(--font-mono);
+}
+
+.concept-label {
+  font-weight: 600;
+}
+
+.concept-why {
+  margin: 0.25rem 0 0;
+  color: var(--text-muted);
+}
+
+.concept-citations {
+  margin: 0.5rem 0 0;
+  font-size: 0.875rem;
+}
+
+.citation-badge {
+  font-family: var(--font-mono);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.05rem 0.35rem;
+}
+
+.quiz-prompt {
+  margin: 0 0 var(--space-1);
+  font-weight: 600;
+}
+
+.quiz-answer summary {
+  cursor: pointer;
+  color: var(--accent);
+}
+
+.quiz-answer-text {
+  margin: var(--space-1) 0 0;
+}
+
+.quiz-source {
+  margin: 0.25rem 0 0;
+  font-size: 0.875rem;
+  color: var(--text-muted);
 }
 
 @media (max-width: 480px) {
