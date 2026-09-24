@@ -10,6 +10,9 @@
 node_modules/
 dist/
 
+# Demo video raw screen recordings + narration (large; assembled by submission/assemble-video.sh)
+/submission/raw/
+
 # Devpost Learn Skill Pack machinery — reinstall with:
 #   npx skills add challengepost/learn-ai-basics --all -y
 # (skills-lock.json IS tracked, so the exact version is recorded)
