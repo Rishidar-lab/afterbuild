@@ -242,9 +242,15 @@ button:disabled {
 }
 
 .empty-note,
-.error-note {
+.error-note,
+.change-note {
   color: var(--text-muted);
   font-style: italic;
+}
+
+.change-note {
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
 }
 
 .error-note {

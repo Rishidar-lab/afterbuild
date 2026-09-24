@@ -96,6 +96,21 @@ function renderChangeMap(brief: Brief): HTMLElement {
         }),
       );
     }
+    if (file.detectionSkipped === 'too-large') {
+      item.appendChild(
+        el('div', {
+          className: 'change-note',
+          text: 'Detection skipped (file too large).',
+        }),
+      );
+    } else if (file.detectionSkipped === 'binary') {
+      item.appendChild(
+        el('div', {
+          className: 'change-note',
+          text: 'Binary — detection skipped.',
+        }),
+      );
+    }
     list.appendChild(item);
   }
   section.appendChild(list);
@@ -223,6 +238,12 @@ export function renderDiffView(container: HTMLElement, parsed: ParsedDiff): void
   for (const file of parsed.files) {
     const fileBlock = el('div', { className: 'diff-file' });
     fileBlock.appendChild(el('div', { className: 'diff-file-path', text: file.path }));
+
+    if (file.detectionSkipped === 'binary') {
+      fileBlock.appendChild(
+        el('div', { className: 'empty-note', text: 'Binary file — not rendered; detection skipped.' }),
+      );
+    }
 
     for (const hunk of file.hunks) {
       const hunkBlock = el('div', { className: 'diff-hunk' });

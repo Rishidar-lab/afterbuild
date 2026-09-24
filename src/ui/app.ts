@@ -1,9 +1,13 @@
 // Slice 2 — input accepted (enable/disable Analyze, Load sample diff, Load
 // .diff file, Clear). Slice 5 wires Analyze itself: parseDiff ->
 // detectConcepts -> buildBrief -> render, plus the plain inline message for
-// unparseable input (full state polish — thin/large/binary — is Slice 7).
-// Slice 6 wires the citation-to-diff-line highlight (see render.ts >
-// wireHighlighting) once, here, on `document`.
+// unparseable input. Slice 6 wires the citation-to-diff-line highlight (see
+// render.ts > wireHighlighting) once, here, on `document`. Slice 7's
+// thin/large/binary states need no separate wiring here — they are handled
+// inside parseDiff/detectConcepts/buildBrief/render, so the same
+// parseDiff -> detectConcepts -> buildBrief -> render call below already
+// covers them; only "unparseable" (an empty `parsed.files`) is decided at
+// this layer.
 
 import { buildBrief } from '../lib/analyze/buildBrief.js';
 import { detectConcepts } from '../lib/analyze/detectConcepts.js';

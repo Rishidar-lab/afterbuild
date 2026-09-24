@@ -33,6 +33,16 @@ export interface FileDiff {
   hunks: Hunk[];
   /** Names of functions/methods added or modified, where detectable. */
   functions: string[];
+  /**
+   * Set by `parseDiff` when concept detection should not run over this
+   * file's added lines: `'binary'` for a recognized binary-file diff
+   * section (no hunks to detect anything in), or `'too-large'` when the
+   * file's added-line count exceeds `parseDiff.MAX_DETECT_LINES` (hunks are
+   * still parsed and still rendered in the diff panel — only detection is
+   * skipped). Undefined means detection ran normally. See
+   * devpost/prd.md > States and Boundaries (Large/binary/minified).
+   */
+  detectionSkipped?: 'binary' | 'too-large';
 }
 
 export interface ParsedDiff {
@@ -65,6 +75,9 @@ export interface ChangeMapEntry {
   added: number;
   removed: number;
   functions: string[];
+  /** Mirrors `FileDiff.detectionSkipped` — carried into the change map so
+   * the UI can show a "detection skipped" note per file. */
+  detectionSkipped?: 'binary' | 'too-large';
 }
 
 export interface ChangeMap {

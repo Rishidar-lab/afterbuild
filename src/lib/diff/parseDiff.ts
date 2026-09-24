@@ -4,14 +4,38 @@
 // devpost/spec.md > Decisions and Open Issues — this is the one place the
 // parser is easy to get subtly wrong; citations in later slices depend on
 // it, hence tests/parseDiff.test.ts was written first.
+//
+// Slice 7 (prd.md > States and Boundaries > Large/binary/minified) adds two
+// more things this parser is responsible for flagging on the `FileDiff` it
+// produces (see types.ts > FileDiff.detectionSkipped): recognizing a binary
+// file's diff section (`Binary files a/... and b/... differ`, or a
+// `GIT binary patch` block) instead of silently dropping that file, and
+// capping concept detection for a file whose added-line count exceeds
+// `MAX_DETECT_LINES` — the file is still fully parsed and its diff still
+// renders; only detectConcepts skips it (see detectConcepts.ts).
 
 import { detectLanguage } from '../detectLanguage.js';
 import type { DiffLine, FileDiff, Hunk, ParsedDiff } from '../types.js';
 
 const FILE_HEADER_RE = /^diff --git /;
+// Fallback path source for a binary section with no ---/+++ or "Binary
+// files" line to read a path from (the `GIT binary patch` form) — the
+// `diff --git a/<old> b/<new>` header line itself always carries both.
+const FILE_HEADER_PATHS_RE = /^diff --git a\/(.+) b\/(.+)$/;
 const OLD_PATH_RE = /^--- (?:a\/(.+)|\/dev\/null)\s*$/;
 const NEW_PATH_RE = /^\+\+\+ (?:b\/(.+)|\/dev\/null)\s*$/;
 const HUNK_HEADER_RE = /^@@ -(\d+)(?:,(\d+))? \+(\d+)(?:,(\d+))? @@/;
+const BINARY_DIFFER_RE = /^Binary files (?:a\/(.+)|\/dev\/null) and (?:b\/(.+)|\/dev\/null) differ\s*$/;
+const GIT_BINARY_PATCH_RE = /^GIT binary patch\s*$/;
+
+/**
+ * Per-file cap on ADDED lines for concept detection (not for parsing/
+ * rendering — a file over this cap is still parsed in full and its diff
+ * still renders in the panel). Proportionate PoC value: large enough that
+ * the bundled sample and any realistic hand-diff are unaffected, small
+ * enough to build a test fixture that exceeds it without an unwieldy file.
+ */
+export const MAX_DETECT_LINES = 400;
 
 // Matches common JS/TS/Python named-function shapes among ADDED lines only.
 // Deliberately conservative — "where detectable" (prd.md > What Changed),
@@ -41,11 +65,20 @@ export function parseDiff(diffText: string): ParsedDiff {
       continue;
     }
 
+    // The `diff --git a/<old> b/<new>` line always carries both paths —
+    // kept only as a last-resort fallback (the `GIT binary patch` form has
+    // no other line that names the path at all).
+    const headerPathsMatch = FILE_HEADER_PATHS_RE.exec(line);
+    const headerOldPath = headerPathsMatch?.[1] ?? null;
+    const headerNewPath = headerPathsMatch?.[2] ?? null;
+
     // Found a file boundary. Skip forward through extended-header lines
-    // (index/mode/similarity/rename/etc.) to find --- and +++.
+    // (index/mode/similarity/rename/etc.) to find --- and +++ (or a binary
+    // marker, which takes the place of a ---/+++/@@ triplet entirely).
     i++;
     let oldPath: string | null = null;
     let newPath: string | null = null;
+    let isBinary = false;
     while (i < rawLines.length && !FILE_HEADER_RE.test(rawLines[i]!)) {
       const headerLine = rawLines[i]!;
       const oldMatch = OLD_PATH_RE.exec(headerLine);
@@ -60,6 +93,19 @@ export function parseDiff(diffText: string): ParsedDiff {
         i++;
         break; // +++ is always immediately followed by the first @@ (or another file)
       }
+      const binaryMatch = BINARY_DIFFER_RE.exec(headerLine);
+      if (binaryMatch) {
+        oldPath = binaryMatch[1] ?? oldPath;
+        newPath = binaryMatch[2] ?? newPath;
+        isBinary = true;
+        i++;
+        break;
+      }
+      if (GIT_BINARY_PATCH_RE.test(headerLine)) {
+        isBinary = true;
+        i++;
+        break; // The base85-encoded patch body follows; skipped below.
+      }
       if (HUNK_HEADER_RE.test(headerLine)) {
         // No ---/+++ pair found (unusual) — bail on this file's headers
         // and let the hunk loop below pick up from here.
@@ -68,10 +114,32 @@ export function parseDiff(diffText: string): ParsedDiff {
       i++;
     }
 
+    if (isBinary) {
+      // Nothing after the marker (a base85 patch body, or nothing at all
+      // for "Binary files ... differ") is renderable diff content — skip
+      // straight to the next file boundary.
+      while (i < rawLines.length && !FILE_HEADER_RE.test(rawLines[i]!)) {
+        i++;
+      }
+      const binaryPath = newPath ?? oldPath ?? headerNewPath ?? headerOldPath;
+      if (binaryPath) {
+        files.push({
+          path: binaryPath,
+          language: detectLanguage(binaryPath),
+          added: 0,
+          removed: 0,
+          hunks: [],
+          functions: [],
+          detectionSkipped: 'binary',
+        });
+      }
+      continue;
+    }
+
     const path = newPath ?? oldPath;
     if (!path) {
-      // Couldn't determine a path at all (e.g. a binary-only diff header we
-      // don't understand yet) — skip past this file's hunks defensively.
+      // Couldn't determine a path at all (an unrecognized header shape) —
+      // skip past this file's hunks defensively.
       while (i < rawLines.length && !FILE_HEADER_RE.test(rawLines[i]!)) {
         i++;
       }
@@ -156,6 +224,11 @@ export function parseDiff(diffText: string): ParsedDiff {
     }
 
     file.functions = extractFunctionNames(file.hunks);
+    if (file.added > MAX_DETECT_LINES) {
+      // Still fully parsed and still rendered — only detectConcepts (which
+      // respects this flag) skips it. See prd.md > States and Boundaries.
+      file.detectionSkipped = 'too-large';
+    }
     files.push(file);
   }
 

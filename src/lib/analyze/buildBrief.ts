@@ -71,6 +71,7 @@ function buildChangeMap(parsed: ParsedDiff): ChangeMap {
     added: f.added,
     removed: f.removed,
     functions: f.functions,
+    detectionSkipped: f.detectionSkipped,
   }));
   return {
     files,

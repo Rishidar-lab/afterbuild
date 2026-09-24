@@ -7,6 +7,13 @@
 // creates a Concept without appending at least one citation in the same
 // step. No rule may emit a concept without a citation, and no concept is
 // ever listed that isn't backed by a matched added line.
+//
+// Slice 7: a file `parseDiff` has flagged with `detectionSkipped` (binary,
+// or over `MAX_DETECT_LINES` added lines — see parseDiff.ts) is skipped
+// entirely here. For a binary file this is a no-op (it has no hunks
+// anyway); for an oversized file it is the actual behavior that keeps
+// detection off it while other files in the same diff are still analyzed
+// normally.
 
 import { rules } from './rules.js';
 import type { Citation, Concept, ParsedDiff } from '../types.js';
@@ -15,6 +22,9 @@ export function detectConcepts(parsed: ParsedDiff): Concept[] {
   const byId = new Map<string, Concept>();
 
   for (const file of parsed.files) {
+    if (file.detectionSkipped) {
+      continue;
+    }
     for (const hunk of file.hunks) {
       for (const line of hunk.lines) {
         if (line.kind !== 'add' || line.newLineNo === undefined) {
