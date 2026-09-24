@@ -24,6 +24,7 @@ UTC unless noted. Kept so there is evidence the project was created new during t
 | 2026-09-24 | 5-build · Slice 6 (traceability + polish) | Click a citation badge → opens diff panel, scrolls to & highlights the exact `data-file`/`data-line`; keyboard-accessible badges; look-and-feel polish; `prefers-reduced-motion` honored. +4 tests. Sonnet 5. Commit 1bba82f. |
 | 2026-09-24 | 5-build · Slice 7 (edge states) | Binary-file + large-file (`MAX_DETECT_LINES=400`) detection-skip with honest notes; thin-diff + unparseable paths; `detectionSkipped` threaded parser→detector→render. +15 tests. Sonnet 5. Commit 4bdd5f3. |
 | 2026-09-24 | 5-build · Slice 8 (demo polish + prep) | Final visual pass; accurate README run steps + honest status; `devpost/demo-checklist.md`; repo-hygiene scan (no secrets, learner-profile untracked); `npm test`/`build`/`preview` all green. **86 tests total, independently re-verified.** Sonnet 5. Commit 4d94e55. |
+| 2026-09-24 | Public repo published | **https://github.com/Rishidar-lab/afterbuild** — PUBLIC, `main` pushed. Owner-authorized. Commit author/committer email masked to GitHub noreply first. Verified: reachable unauthenticated (HTTP 200), local == origin, and no secrets / `.env` / `dist` / `node_modules` / `learner-profile.md` on the remote. |
 
 ## Status
 - [x] Learner reviews/approves scope, PRD, spec — approved 2026-09-24 (`status: approved`).
@@ -32,7 +33,7 @@ UTC unless noted. Kept so there is evidence the project was created new during t
 - [x] Repo-hygiene scan — no secrets/keys tracked; `devpost/learner-profile.md` not tracked; no absolute home paths in tracked files.
 
 ## Remaining — OWNER-gated submission steps (not yet done)
-- [ ] Public GitHub repository created + pushed (owner must authorize publishing; code + history become public).
+- [x] Public GitHub repository created + pushed — https://github.com/Rishidar-lab/afterbuild (PUBLIC, `main`; author email masked to GitHub noreply). 2026-09-24.
 - [ ] 1–3 min demo video recorded (owner) and hosted publicly (YouTube/Vimeo).
 - [ ] Devpost project name + description + form fields written **by the owner** (Skill Pack `6-ship` requires the learner to author submission copy); exit survey completed.
 - [ ] Submission on Devpost (owner) before 2026-10-26 17:00 EDT.
@@ -45,3 +46,7 @@ This build followed a custom slice plan (`devpost/IMPLEMENTATION_PLAN.md`), not 
   `source: challengepost/learn-ai-basics`).
 - AI coding assistance used as permitted by contest rules (agents explicitly allowed).
 - No prior-project source reused; see `COMPETITION_ORIGIN.md`.
+- 2026-09-24: before publishing, all commits' author/committer email was masked to a GitHub
+  noreply address (a history rewrite). Commit SHAs referenced in the table above are
+  pre-rewrite and no longer resolve; run `git log` for the current SHAs. Commit messages are
+  unchanged, so each entry is still identifiable by its message.
