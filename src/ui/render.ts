@@ -4,12 +4,18 @@
 // added lines. See devpost/spec.md > Components > ui/render.ts and
 // devpost/prd.md > Features and Behavior (all four sections).
 //
-// The concept-to-hunk click highlight itself is Slice 6 — this slice only
-// emits the anchors (`data-file`/`data-line` on added diff lines, and
-// `data-concept-id` on concept-inventory rows) that behavior will attach
-// to. No click listeners are wired here yet.
+// Slice 6 adds `wireHighlighting`: a single delegated click/keyboard
+// listener (attached once, from app.ts, to a root that contains both the
+// citation badges and the diff panel) that opens the collapsed diff panel,
+// scrolls the matching `data-file`/`data-line` diff line into view, and
+// applies a temporary highlight class. See devpost/spec.md > Look and Feel
+// and devpost/IMPLEMENTATION_PLAN.md > Slice 6.
 
 import type { Brief, ParsedDiff } from '../lib/types.js';
+
+const HIGHLIGHT_CLASS = 'concept-highlight';
+const HIGHLIGHT_DURATION_MS = 2000;
+let highlightTimer: ReturnType<typeof setTimeout> | undefined;
 
 interface ElementOptions {
   className?: string;
@@ -36,11 +42,22 @@ function el<K extends keyof HTMLElementTagNameMap>(
   return node;
 }
 
+/** A citation badge doubles as a click/keyboard-activatable control that
+ * jumps to and highlights its source diff line (wired by `wireHighlighting`
+ * below) — `role="button"` + `tabindex="0"` make it keyboard-reachable
+ * without changing its element type away from the inline `<code>` the rest
+ * of the styling expects. */
 function citationBadge(file: string, line: number): HTMLElement {
   return el('code', {
     className: 'citation-badge',
     text: `${file}:${line}`,
-    attrs: { 'data-file': file, 'data-line': String(line) },
+    attrs: {
+      'data-file': file,
+      'data-line': String(line),
+      role: 'button',
+      tabindex: '0',
+      'aria-label': `Highlight source line ${file}:${line} in the rendered diff`,
+    },
   });
 }
 
@@ -230,4 +247,104 @@ export function renderDiffView(container: HTMLElement, parsed: ParsedDiff): void
     fragments.push(fileBlock);
   }
   container.replaceChildren(...fragments);
+}
+
+/** True when the environment says the viewer prefers reduced motion. Falls
+ * back to `false` (i.e. allow the default smooth scroll) when `matchMedia`
+ * isn't available at all, rather than guessing. */
+function prefersReducedMotion(): boolean {
+  return (
+    typeof window !== 'undefined' &&
+    typeof window.matchMedia === 'function' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  );
+}
+
+/** Finds the diff line inside `diffView` whose `data-file`/`data-line`
+ * match, opens its ancestor `<details class="diff-panel">` if collapsed,
+ * scrolls it into view, and applies a temporary `.concept-highlight` class
+ * (cleared after `HIGHLIGHT_DURATION_MS`, and on any subsequent highlight). */
+function highlightDiffLine(diffView: Element, file: string, line: string): void {
+  let target: HTMLElement | null = null;
+  for (const candidate of diffView.querySelectorAll<HTMLElement>('[data-file][data-line]')) {
+    if (candidate.dataset.file === file && candidate.dataset.line === line) {
+      target = candidate;
+      break;
+    }
+  }
+  if (!target) {
+    return;
+  }
+
+  const panel = target.closest('details.diff-panel');
+  if (panel instanceof HTMLDetailsElement && !panel.open) {
+    panel.open = true;
+  }
+
+  // jsdom (used by the test environment) does not implement scrollIntoView.
+  if (typeof target.scrollIntoView === 'function') {
+    target.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'center' });
+  }
+
+  diffView.querySelectorAll(`.${HIGHLIGHT_CLASS}`).forEach((node) => node.classList.remove(HIGHLIGHT_CLASS));
+  target.classList.add(HIGHLIGHT_CLASS);
+
+  if (highlightTimer !== undefined) {
+    clearTimeout(highlightTimer);
+  }
+  const highlighted = target;
+  highlightTimer = setTimeout(() => {
+    highlighted.classList.remove(HIGHLIGHT_CLASS);
+  }, HIGHLIGHT_DURATION_MS);
+}
+
+/**
+ * Wires ONE delegated click/keyboard listener on `root` — call it once, from
+ * `app.ts`, on a container that contains both the citation badges (in
+ * `#report`) and the rendered diff panel (`#diff-view` inside
+ * `<details class="diff-panel">`), e.g. `document`. Do not attach per-badge
+ * listeners: badges come and go every time `renderBrief`/`renderDiffView`
+ * re-render, so a single delegated listener on a stable ancestor is the only
+ * way to avoid re-wiring (and leaking) a listener per Analyze run.
+ *
+ * Activating (clicking, or pressing Enter/Space on) a `.citation-badge`
+ * opens the diff panel if collapsed, scrolls the matching
+ * `[data-file][data-line]` diff line into view, and highlights it.
+ */
+export function wireHighlighting(root: ParentNode & EventTarget): void {
+  const activate = (target: EventTarget | null): void => {
+    if (!(target instanceof Element)) {
+      return;
+    }
+    const badge = target.closest('.citation-badge[data-file][data-line]');
+    if (!badge) {
+      return;
+    }
+    const file = badge.getAttribute('data-file');
+    const line = badge.getAttribute('data-line');
+    const diffView = root.querySelector('#diff-view');
+    if (!file || !line || !diffView) {
+      return;
+    }
+    highlightDiffLine(diffView, file, line);
+  };
+
+  root.addEventListener('click', (event) => {
+    activate(event.target);
+  });
+
+  root.addEventListener('keydown', (event) => {
+    const keyboardEvent = event as KeyboardEvent;
+    if (keyboardEvent.key !== 'Enter' && keyboardEvent.key !== ' ') {
+      return;
+    }
+    const target = keyboardEvent.target;
+    if (!(target instanceof Element) || !target.closest('.citation-badge')) {
+      return;
+    }
+    // Prevent the page from scrolling on Space before we do our own,
+    // deliberate scroll-into-view.
+    keyboardEvent.preventDefault();
+    activate(target);
+  });
 }

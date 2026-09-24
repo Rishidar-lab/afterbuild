@@ -10,6 +10,7 @@
     monospace;
 
   --accent: #2f6feb;
+  --accent-soft: rgba(47, 111, 235, 0.16);
 
   --bg: #f7f7f8;
   --surface: #ffffff;
@@ -32,6 +33,7 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --accent: #6ea8fe;
+    --accent-soft: rgba(110, 168, 254, 0.2);
     --bg: #16171a;
     --surface: #1e2023;
     --border: #34363b;
@@ -173,10 +175,11 @@ button:disabled {
   margin-top: var(--space-2);
   font-family: var(--font-mono);
   font-size: 0.8125rem;
+  line-height: 1.6;
 }
 
 .diff-file + .diff-file {
-  margin-top: var(--space-2);
+  margin-top: var(--space-3);
 }
 
 .diff-file-path {
@@ -184,13 +187,20 @@ button:disabled {
   padding-bottom: var(--space-1);
 }
 
+.diff-hunk + .diff-hunk {
+  margin-top: var(--space-1);
+}
+
 .diff-hunk-header {
   color: var(--text-muted);
+  padding: 0.125rem 0;
 }
 
 .diff-line {
   white-space: pre-wrap;
   word-break: break-word;
+  padding: 0 0.25rem;
+  border-radius: 3px;
 }
 
 .diff-line.add {
@@ -203,9 +213,15 @@ button:disabled {
   color: var(--removed-text);
 }
 
+/* Slice 6 — the temporary highlight a citation-badge click/Enter/Space
+   applies to its matching diff line (see ui/render.ts > wireHighlighting).
+   The transition itself is motion; prefers-reduced-motion below collapses
+   its duration to ~0, leaving only the static outline + tint. */
 .concept-highlight {
   outline: 2px solid var(--accent);
-  outline-offset: 2px;
+  outline-offset: -1px;
+  background-color: var(--accent-soft);
+  transition: background-color 200ms ease, outline-color 200ms ease;
 }
 
 /* Report zone — the four Aftermath Brief sections. */
@@ -290,6 +306,7 @@ button:disabled {
 .concept-why {
   margin: 0.25rem 0 0;
   color: var(--text-muted);
+  max-width: 65ch;
 }
 
 .concept-citations {
@@ -297,17 +314,33 @@ button:disabled {
   font-size: 0.875rem;
 }
 
+/* Citation badges are clickable controls (Slice 6: activating one scrolls to
+   and highlights its source diff line) — styled and exposed like one
+   (cursor, hover/focus affordance, role="button" + tabindex in render.ts). */
 .citation-badge {
   font-family: var(--font-mono);
   background: var(--bg);
   border: 1px solid var(--border);
   border-radius: 4px;
   padding: 0.05rem 0.35rem;
+  cursor: pointer;
+  transition: border-color 150ms ease, background-color 150ms ease;
+}
+
+.citation-badge:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.citation-badge:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 .quiz-prompt {
   margin: 0 0 var(--space-1);
   font-weight: 600;
+  max-width: 65ch;
 }
 
 .quiz-answer summary {
@@ -315,8 +348,14 @@ button:disabled {
   color: var(--accent);
 }
 
+.quiz-answer summary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
 .quiz-answer-text {
   margin: var(--space-1) 0 0;
+  max-width: 65ch;
 }
 
 .quiz-source {

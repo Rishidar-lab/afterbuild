@@ -2,12 +2,14 @@
 // .diff file, Clear). Slice 5 wires Analyze itself: parseDiff ->
 // detectConcepts -> buildBrief -> render, plus the plain inline message for
 // unparseable input (full state polish — thin/large/binary — is Slice 7).
+// Slice 6 wires the citation-to-diff-line highlight (see render.ts >
+// wireHighlighting) once, here, on `document`.
 
 import { buildBrief } from '../lib/analyze/buildBrief.js';
 import { detectConcepts } from '../lib/analyze/detectConcepts.js';
 import { parseDiff } from '../lib/diff/parseDiff.js';
 import { sampleDiff } from '../samples/sample.diff.js';
-import { renderBrief, renderDiffView } from './render.js';
+import { renderBrief, renderDiffView, wireHighlighting } from './render.js';
 
 /**
  * Query a required DOM element by selector, or throw. Returning the
@@ -99,3 +101,8 @@ analyzeBtn.addEventListener('click', () => {
 });
 
 updateAnalyzeEnabled();
+
+// One delegated listener for the lifetime of the page (Slice 6) — covers
+// every citation badge rendered by any past or future Analyze run, so it is
+// wired once here rather than re-wired inside the Analyze handler above.
+wireHighlighting(document);
