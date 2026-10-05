@@ -14,11 +14,12 @@ Afterbuild turns a diff into a grounded, checkable learning artifact.
 
 ## Status
 
-> **MVP implemented; passes 86 tests as of 2026-09-24; not yet deployed, no demo video
-> recorded yet.** The core loop runs end to end in the local dev server and in the built
-> `dist/` bundle: paste or load a diff, press Analyze, read the four-section Aftermath
-> Brief, click a citation badge to scroll to and highlight the exact diff line it came from.
-> `npm run build` completes with no type errors.
+> **MVP implemented; passes 86 tests; deployed and live** at
+> https://rishidar-lab.github.io/afterbuild/ (GitHub Pages). The core loop runs end to end
+> in the local dev server, in the built `dist/` bundle, and on the live site: paste or load
+> a diff, press Analyze, read the four-section Aftermath Brief, click a citation badge to
+> scroll to and highlight the exact diff line it came from. `npm run build` completes with no
+> type errors. Demo video not yet recorded (owner-gated Devpost submission step).
 
 Run `npm test` yourself for the current, authoritative count — the number above is a
 snapshot, not a promise it won't change as the suite grows.
